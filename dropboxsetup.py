@@ -11,24 +11,20 @@ import dropbox, os, webbrowser
 # requires a dropbox app key and secret, which can be created on dropbox's developer website
 # most of this script was shamelessly copied from https://gist.github.com/ctaloi/4156185
  
-def configure_token(sess, TOKEN_FILENAME, TOKEN_DIRECTORY):
-	
-	# if token directory is defined, make sure it ends in a backslash
-	if ((TOKEN_DIRECTORY != '') and (TOKEN_DIRECTORY[-1] != os.sep)):
-		TOKEN_DIRECTORY += os.sep
+def configure_token(sess, TOKEN_FILENAME):
 	
 	# read token if it exists, otherwise create a new one
-	if os.path.exists(TOKEN_DIRECTORY + TOKEN_FILENAME):
-		token_file = open(TOKEN_DIRECTORY + TOKEN_FILENAME)
+	if os.path.exists(TOKEN_FILENAME):
+		token_file = open(TOKEN_FILENAME)
 		token_key, token_secret = token_file.read().split('|')
 		token_file.close()
 		sess.set_token(token_key,token_secret)
 	else:
-		first_access(sess, TOKEN_FILENAME, TOKEN_DIRECTORY)
+		first_access(sess, TOKEN_FILENAME)
 	return
 
 
-def first_access(sess, TOKEN_FILENAME, TOKEN_DIRECTORY):
+def first_access(sess, TOKEN_FILENAME):
 	request_token = sess.obtain_request_token()
 	url = sess.build_authorize_url(request_token)
 	
@@ -41,22 +37,17 @@ def first_access(sess, TOKEN_FILENAME, TOKEN_DIRECTORY):
 	# this will fail if the user didn't visit the above URL and hit 'Allow'
 	access_token = sess.obtain_access_token(request_token)
 	
-	# create the token directory if necessary
-	if TOKEN_DIRECTORY not in ['','.']:
-		if not os.path.exists(TOKEN_DIRECTORY):
-			os.mkdir(TOKEN_DIRECTORY)
-		
 	# save the token file
-	token_file = open(TOKEN_DIRECTORY + TOKEN_FILENAME,'w')
+	token_file = open(TOKEN_FILENAME,'w')
 	token_file.write("%s|%s" % (access_token.key,access_token.secret) )
 	token_file.close()
 	return
 
 
-def init(TOKEN_FILENAME, APP_KEY, APP_SECRET, TOKEN_DIRECTORY='Tokens', ACCESS_TYPE='app_folder'):
+def init(TOKEN_FILENAME, APP_KEY, APP_SECRET, ACCESS_TYPE='app_folder'):
 	# create the Dropbox session and client for file interaction
 	sess = dropbox.session.DropboxSession(APP_KEY, APP_SECRET, ACCESS_TYPE)
-	configure_token(sess, TOKEN_FILENAME, TOKEN_DIRECTORY)
+	configure_token(sess, TOKEN_FILENAME)
 	client = dropbox.client.DropboxClient(sess)
 	
 	return sess, client
