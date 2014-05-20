@@ -1,6 +1,6 @@
 # pythonista-dropbox-sync
 
-A Pythonista script and supporting module to sync [Pythonista](http://omz-software.com/pythonista/) files with [Dropbox](http://dropbox.com), based on original script and module by Michelle Gill, but with my own improvements. 
+A Pythonista script and supporting module to sync [Pythonista](http://omz-software.com/pythonista/) files with [Dropbox](http://dropbox.com), based on and [original script](https://gist.github.com/mlgill/8311088) and [module](https://gist.github.com/mlgill/8311046) by Michelle Gill, but with my own improvements. 
 
 ## Motivation
 
@@ -10,13 +10,18 @@ In particular, I view this script as a first step in linking my scripts in Pytho
 
 ## Installation and use
 
-Go to [Dropbox's developer page](https://gist.github.com/mlgill/8311088) and register a new app. Be sure to: 
+Go to [Dropbox's developer page](https://www.dropbox.com/developers/apps/create) to register a new app. Be sure to: 
 
-- 
+- Make it a "Dropbox API app".
+- Tell Dropbox that your app needs access to "Files and datastores". 
+- Tell Dropbox that the app can be limited to its own folder. 
+- Give it a unique name (for example, "Pythonista Sync YOURINITIALS"). 
 - Note your app key. 
 - Note your app secret. 
 
-Make sure DropboxSync.py and dropboxsetup.py are stored in the same directory—currently you'll probably want this to be Pythonista's root directory. Then open DropboxSync.py and run it.
+Otherwise, default setting should be fine. 
+
+Make sure DropboxSync.py and dropboxsetup.py are stored in the same directory, and that it's the directory in Pythonista you want to sync—currently you'll probably want this to be Pythonista's root directory. Then open DropboxSync.py and run it.
 
 On first run, DropboxSync will request that you enter a name for the dropbox token file (I recommend that it start with "." so that it's hidden on many systems). It will then request that you enter your app key and app secret. The app then reads the current Pythonista directory and subdirectories, the target Dropbox directory, and ensures that the latest version of each file (based on time stamp) is stored in both locations. 
 
