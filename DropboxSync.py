@@ -173,12 +173,17 @@ def savestate(state):
 	pickle.dump(state,fyle)
 	fyle.close()
 	
-if __name__ == '__main__':	
-	token_filename = 'dropbox_sync.token'
-	app_key = 'xxxxxx'
-	app_secret = 'xxxxxx'
-	
+if __name__ == '__main__':
 	console.show_activity()
+
+	print("We need a few setup details.\n")
+	print("What do you want to call the Dropbox token file?")
+	token_filename = raw_input()
+	print("What's your Dropbox app key?")
+	app_key = raw_input()
+	print("What's your Dropbox app secret?")
+	app_secret = raw_input()
+	print("Cool. We're ready to proceed.\n\n")
 	
 	print """
 ****************************************
