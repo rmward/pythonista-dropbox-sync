@@ -44,7 +44,28 @@ class dropbox_state:
 		self.cursor = None
 		self.local_files = {}
 		self.remote_files = {}
-	
+		self.app_key=""
+		self.app_secret=""
+		self.token_file_name=""
+
+	def get_app_key():
+		return self.app_key		
+
+	def set_app_key(name):
+		self.app_key=name
+
+	def get_app_secret():
+		return self.app_secret
+
+	def set_app_secret(): 
+		self.app_secret=name
+
+	def get_token_file_name(): 
+		return self.token_file_name
+ 
+	def set_token_file_name(name): 
+		self.token_file_name=name
+
 	# use ignore_path to prevent download of recently uploaded files 
 	def execute_delta(self, client, ignore_path = None):
 		delta = client.delta(self.cursor)
@@ -175,6 +196,8 @@ def savestate(state):
 	
 if __name__ == '__main__':
 	console.show_activity()
+
+# Sync test!
 
 	print("We need a few setup details.\n")
 	print("What do you want to call the Dropbox token file?")
