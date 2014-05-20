@@ -48,22 +48,22 @@ class dropbox_state:
 		self.app_secret=""
 		self.token_file_name=""
 
-	def get_app_key():
+	def get_app_key(self):
 		return self.app_key		
 
-	def set_app_key(name):
+	def set_app_key(self, name):
 		self.app_key=name
 
-	def get_app_secret():
+	def get_app_secret(self):
 		return self.app_secret
 
-	def set_app_secret(): 
+	def set_app_secret(self, name): 
 		self.app_secret=name
 
-	def get_token_file_name(): 
+	def get_token_file_name(self): 
 		return self.token_file_name
  
-	def set_token_file_name(name): 
+	def set_token_file_name(self, name): 
 		self.token_file_name=name
 
 	# use ignore_path to prevent download of recently uploaded files 
@@ -206,7 +206,7 @@ if __name__ == '__main__':
 	# lets see if we can unpickle
 	try:
 		state = loadstate()
-		_, client = dropboxsetup.init(token_filename, app_key, app_secret)
+		_, client = dropboxsetup.init(state.get_token_filename(), state.get_app_key(), state.get_app_secret())
 	except:
 		print '\nCannot find state file. ***Making new local state***\n'
 		# Aaaah, we have nothing, probably first run
@@ -214,14 +214,17 @@ if __name__ == '__main__':
 
 		print("We need a few setup details.\n")
 		print("What do you want to call the Dropbox token file?")
-		state.set_token_filename(raw_input())
+		temp_input=raw_input()
+		state.set_token_file_name(temp_input)
 		print("What's your Dropbox app key?")
-		state.set_app_key(raw_input())		
+		temp_input=raw_input()
+		state.set_app_key(temp_input)		
 		print("What's your Dropbox app secret?")
-		state.set_app_secret(raw_input())
+		temp_input=raw_input()
+		state.set_app_secret(temp_input)
 		print("Cool. We're ready to proceed.\n\n")
 	
-		_, client = dropboxsetup.init(state.get_token_filename(), state.get_app_key(), state.get_app_secret())
+		_, client = dropboxsetup.init(state.get_token_file_name(), state.get_app_key(), state.get_app_secret())
 		
 		print '\nDownloading everything from Dropbox'
 		# no way to check what we have locally is newer, gratuitous dl
