@@ -196,32 +196,32 @@ def savestate(state):
 	
 if __name__ == '__main__':
 	console.show_activity()
-
-# Sync test!
-
-	print("We need a few setup details.\n")
-	print("What do you want to call the Dropbox token file?")
-	token_filename = raw_input()
-	print("What's your Dropbox app key?")
-	app_key = raw_input()
-	print("What's your Dropbox app secret?")
-	app_secret = raw_input()
-	print("Cool. We're ready to proceed.\n\n")
 	
 	print """
 ****************************************
 *     Dropbox File Syncronization      *
 ****************************************"""
 	
-	_, client = dropboxsetup.init(token_filename, app_key, app_secret)
 	print '\nLoading local state'
 	# lets see if we can unpickle
 	try:
 		state = loadstate()
+		_, client = dropboxsetup.init(token_filename, app_key, app_secret)
 	except:
-		print '\nCannot find state file. ***Making new local state***'
+		print '\nCannot find state file. ***Making new local state***\n'
 		# Aaaah, we have nothing, probably first run
 		state = dropbox_state()
+
+		print("We need a few setup details.\n")
+		print("What do you want to call the Dropbox token file?")
+		state.set_token_filename(raw_input())
+		print("What's your Dropbox app key?")
+		state.set_app_key(raw_input())		
+		print("What's your Dropbox app secret?")
+		state.set_app_secret(raw_input())
+		print("Cool. We're ready to proceed.\n\n")
+	
+		_, client = dropboxsetup.init(state.get_token_filename(), state.get_app_key(), state.get_app_secret())
 		
 		print '\nDownloading everything from Dropbox'
 		# no way to check what we have locally is newer, gratuitous dl
