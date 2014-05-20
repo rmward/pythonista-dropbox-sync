@@ -236,11 +236,15 @@ if __name__ == '__main__':
 	
 	print '\nChecking for new or updated local files'
 	# back to business, lets see if there is anything new or changed localy
+	dir_match=re.search(r'(/private/var/mobile/Applications/[0-9A-Z\\-]+/Documents)/.*', os.getcwd())
+	pythonista_root=dir_match.group(1)
+
 	filelist = []
-	for root, dirnames, filenames in os.walk('.'):
+	
+	for root, dirnames, filenames in os.walk(pythonista_root):
 		for filename in filenames:
 			if filename != STATE_FILE:
-				filelist.append( os.path.join(root, filename)[2:])
+				filelist.append( os.path.join(root, filename))
 	
 	####### REGEX FILTERS NOT FULLY TESTED YET #######
 	filelist = set(filelist)
